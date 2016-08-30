@@ -42,7 +42,7 @@ def select(population, fitnesses):
 def get_two_children(population, fitnesses, mutate_rate, crossover_rate):
     "Get two children from the said population"
     i1, i2 = select(population, fitnesses), select(population, fitnesses)
-    n1, n2 = i1.corssover(i2, crossover_rate), i2.crossover(i1, crossover_rate)
+    n1, n2 = i1.crossover(i2, crossover_rate), i2.crossover(i1, crossover_rate)
     n1.mutate(mutate_rate)
     n2.mutate(mutate_rate)
     return n1, n2
@@ -53,7 +53,7 @@ def mate_population(population, mutate_rate, crossover_rate, new_size):
 
     assert len(set(type(i) for i in population)) == 1
     ind_type = type(population[0])
-    fitnesses = p_map(ind_type.get_fitness, population)
+    fitnesses = p_map(ind_type.fitness, population)
 
     new_pop = p_starmap(get_two_children,
             ((population, fitnesses, mutate_rate, crossover_rate)
@@ -61,9 +61,30 @@ def mate_population(population, mutate_rate, crossover_rate, new_size):
     #new_pop = deque()
     #for _ in range(int(new_size / 2)):  # we append 2 children per pass
         #i1, i2 = select(population, fitnesses), select(population, fitnesses)
-        #n1, n2 = i1.corssover(i2, crossover_rate), i2.crossover(i1, crossover_rate)
+        #n1, n2 = i1.crossover(i2, crossover_rate), i2.crossover(i1, crossover_rate)
         #n1.mutate(mutate_rate)
         #n2.mutate(mutate_rate)
         #new_pop.append(n1)
         #new_pop.append(n2)
     return list(new_pop)
+
+def get_only_new_pop(population, new_population):
+    "Return new population"
+    return new_population
+
+def genetic_search(individual_class, mutate_rate, crossover_rate, population_size, get_survivors, epochs):
+    """
+    Perform genetic search
+
+    individual_class            : class of an individual in the population
+    mutate_rate                 : mutation rate
+    crossover_rate              : crossover rate
+    population_size             : size of the initial population
+    get_survivors               : given a population and child population, get a survivor population
+    epochs                      : how many cycles of evolution happen
+    """
+    population = make_population(individual_class, population_size)
+    for epoch in range(epochs):
+        new_population = mate_population(population, mutate_rate, crossover_rate, population_size)
+        population = get_survivors(population, new_population)
+    return population
