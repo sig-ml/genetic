@@ -11,6 +11,7 @@ Usage
     - `crossover(self, individual2, crossover_rate)`
     - `mutate(self, mutate_rate)`
     - `fitness(self)`
+    - `__init__(self, identity)`
 
 - Calling the genetic search function performs the search
 

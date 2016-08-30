@@ -27,11 +27,9 @@ def make_population(individual_class, size):
 
 def select(population, fitnesses):
     "Given fitness and pop, select individual"
-    M, m = max(fitnesses), min(fitnesses)
-    norm_fit = [(i - m) / (M - m) for i in fitnesses]
-    total = sum(norm_fit)
+    total = sum(fitnesses)
     mark =  random.random() * total
-    counter, chosen_one = 0, None
+    count, chosen_one = 0, None
     for member, fitness in zip(population, fitnesses):
         count += fitness
         if count >= mark:
