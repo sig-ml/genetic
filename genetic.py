@@ -70,7 +70,7 @@ def get_only_new_pop(population, new_population):
     "Return new population"
     return new_population
 
-def genetic_search(individual_class, mutate_rate, crossover_rate, population_size, get_survivors, epochs):
+def genetic_search(individual_class, mutate_rate, crossover_rate, population_size, epochs, get_survivors=get_only_new_pop):
     """
     Perform genetic search
 
@@ -80,8 +80,15 @@ def genetic_search(individual_class, mutate_rate, crossover_rate, population_siz
     population_size             : size of the initial population
     get_survivors               : given a population and child population, get a survivor population
     epochs                      : how many cycles of evolution happen
+
+    individual class must provide the following methods:
+        - crossover(self, individual2, crossover_rate)
+        - mutate(self, mutate_rate)
+        - fitness(self)
+        - __init__(self, identity)
     """
     population = make_population(individual_class, population_size)
+    epoch  = int(1e10) if epoch == -1 else epoch
     for epoch in range(epochs):
         new_population = mate_population(population, mutate_rate, crossover_rate, population_size)
         population = get_survivors(population, new_population)
