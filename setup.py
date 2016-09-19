@@ -19,7 +19,9 @@ setup(
     author_email="arjoonn.msccsc5@iiitmk.ac.in",
     url='https://github.com/sig-ml/genetic',
     keywords="Genetic Algorithms Multiprocessing",
-    packages=['genetic'],
+    packages=find_packages(),
+    py_modules=['genetic'],
+    include_package_data=True,
     license='MIT',
     classifiers=[
         "Development Status :: 3 - Alpha",
