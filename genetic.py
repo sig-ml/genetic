@@ -2,6 +2,8 @@ import random
 from collections import deque
 import multiprocessing as mp
 
+__version__ = (0, 0, 1)
+
 # --------------
 def p_starmap(fn, data, n_jobs=None):
     "Parallel starmap function"
